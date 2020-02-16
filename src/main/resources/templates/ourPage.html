@@ -1,0 +1,2556 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+
+
+<head>
+    <title>Our application</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <script src="../js/jquery.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="/css/dropzone.css">
+    <link rel="stylesheet" href="/css/jquery.simplecolorpicker.css">
+    <link rel="stylesheet" href="/css/jquery.simplecolorpicker-regularfont.css">
+    <link rel="stylesheet" href="/css/jquery.simplecolorpicker-glyphicons.css">
+    <link rel="stylesheet" href="/css/jquery.simplecolorpicker-fontawesome.css">
+    <link href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script src="/js/jquery.simplecolorpicker.js"></script>
+    <script src="../js/dropzone1.js"></script>
+
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+
+            font-family: Arial;
+        }
+
+
+        #onlyForPaintRoute{
+            position: relative;
+            display: none;
+            left: 70px;
+        }
+
+
+        #map {
+            position: relative;
+            top: 0%;
+            left: 0%;
+            widht: 100%;
+            height: 100%;
+            zoom: normal;
+        }
+
+        p {
+            font-family: Sans-Serif;
+            font-size: 12px;
+            padding: 12px 0px 12px 10px;
+            margin: 0px;
+        }
+
+        .navbar-text {
+            position: absolute;
+            top: 19%;
+            left: 69.5%;
+        }
+
+        .buttons{
+            font-size: 14px;
+        }
+
+
+        .switch {
+            position: absolute;
+            top: 24%;
+            left: 77.5%;
+
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+
+        .switch input {
+            display: none;
+        }
+
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            zoom: 0;
+            z-index: 10;
+            width: 100%;
+            height: 60px;
+        }
+
+        .stars-outer {
+            position: relative;
+            display: inline-block;
+            margin-top: 1%;
+        }
+
+        .stars-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+        }
+
+        .stars-outer::before {
+            content: "\f005 \f005 \f005 \f005 \f005";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #ccc;
+        }
+
+        .stars-inner::before {
+            content: "\f005 \f005 \f005 \f005 \f005";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #f8ce0b;
+        }
+
+        .my-hint {
+            display: inline-block;
+            padding: 10px;
+            height: auto;
+            position: relative;
+            left: -10px;
+            width: auto;
+            font-size: 18px;
+            line-height: 17px;
+            color: grey;
+            text-align: center;
+            vertical-align: middle;
+            background-color: #ffffff;
+            border: 1px solid #CDB7B5;
+            border-radius: 20px;
+            font-family: Arial;
+        }
+
+        .rating-table {
+            position: center;
+            align-content: center;
+            align-items: center;
+            margin: auto;
+            font-size: 16px;
+            color: black;
+        }
+
+        .route-name {
+            color: black;
+            margin-bottom: 100px;
+            font-size: 23px;
+        }
+
+        .star-rating {
+            font-size: 0;
+            margin-top: 3%;
+        }
+
+        .star-rating__wrap {
+            display: inline-block;
+            font-size: 1rem;
+        }
+
+        .star-rating__wrap:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .star-rating__ico {
+            float: right;
+            padding-left: 2px;
+            cursor: pointer;
+            color: #f8ce0b;
+        }
+
+        .star-rating__ico:last-child {
+            padding-left: 0;
+        }
+
+        .star-rating__input {
+            display: none;
+        }
+
+        .star-rating__ico:hover:before,
+        .star-rating__ico:hover ~ .star-rating__ico:before,
+        .star-rating__input:checked ~ .star-rating__ico:before {
+            content: "\f005";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+        }
+
+        .alert-review {
+            margin-top: 5%;
+        }
+
+
+        .route-img {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <a class="navbar-brand" href="#">TouristTrapsApp</a>
+
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item" th:if="${signInData.user}">
+
+            <div id="onlyForPaintRoute">
+                Select a color:
+                <select name="colorpicker-regularfont" id="initColorPalette"
+                        onchange="changeColor(this.options[this.selectedIndex].value)">
+                    <option value="#7bd148">Green</option>
+                    <option value="#5484ed">Bold blue</option>
+                    <option value="#a4bdfc">Blue</option>
+                    <option value="#46d6db">Turquoise</option>
+                    <option value="#7ae7bf">Light green</option>
+                    <option value="#51b749">Bold green</option>
+                    <option value="#fbd75b">Yellow</option>
+                    <option value="#ffb878">Orange</option>
+                    <option value="#ff887c">Red</option>
+                    <option value="#dc2127">Bold red</option>
+                    <option value="#dbadff">Purple</option>
+                    <option value="#e1e1e1">Gray</option>
+                </select>
+                <button type="button" class="btn btn-primary"  id="buttFinish" onclick="btnFinishClick()">
+                    Finish
+                </button>
+                <button type="button" class="btn btn-secondary" id="buttCancel" onclick="buttCancelClick()">
+                    Cancel
+                </button>
+            </div>
+
+            <label class="switch">
+                <input type="checkbox" id="hlpbtn" onchange="hlpbtnChange()">
+                <span class="slider round"></span>
+            </label>
+        </li>
+
+        <li class="navbar-text" th:if="${signInData.user}">
+            Create Route
+        </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <div th:if="!${signInData.user}">
+                <a class="btn btn-primary mt-2" href="/login">
+                    Sign in
+                </a>
+            </div>
+            <div th:unless="!${signInData.user}">
+                <div>
+                    <a class="btn btn-primary mt-2" id="userName" href="/logout">
+                    </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    $(document).ready(function () {
+        $('select[name="colorpicker-change-background-color"]').on('change', function () {
+            $(document.body).css('background-color', $('select[name="colorpicker-change-background-color"]').val());
+        });
+
+        setTimeout(function () {
+            $('select[name="colorpicker-selectColor-#fbd75b"]').simplecolorpicker('selectColor', '#fbd75b');
+        }, 5000);
+
+        setTimeout(function () {
+            $('select[name="colorpicker-selectColor-#FBD75B"]').simplecolorpicker('selectColor', '#FBD75B');
+        }, 5000);
+
+        setTimeout(function () {
+            $('select[name="colorpicker-selectColor-#fbd75b-multiple"]').simplecolorpicker('selectColor', '#fbd75b');
+        }, 5000);
+
+        setTimeout(function () {
+            $('select[name="colorpicker-selectColor-unknown"]').simplecolorpicker('selectColor', 'unknown');
+        }, 5000);
+
+        setTimeout(function () {
+            $('select[name="colorpicker-picker-selectColor-#fbd75b"]').simplecolorpicker('selectColor', '#fbd75b');
+        }, 5000);
+
+        setTimeout(function () {
+            $('select[name="colorpicker-picker-selectColor-unknown"]').simplecolorpicker('selectColor', 'unknown');
+        }, 5000);
+
+        $('#initColorPalette').on('click', function () {
+            $('select[name="colorpicker-shortlist"]').simplecolorpicker();
+            $('select[name="colorpicker-longlist"]').simplecolorpicker();
+            $('select[name="colorpicker-notheme"]').simplecolorpicker();
+            $('select[name="colorpicker-regularfont"]').simplecolorpicker({theme: 'regularfont'});
+            $('select[name="colorpicker-glyphicons"]').simplecolorpicker({theme: 'glyphicons'});
+            $('select[name="colorpicker-fontawesome"]').simplecolorpicker({theme: 'fontawesome'});
+            $('select[name="colorpicker-bootstrap3-form"]').simplecolorpicker({theme: 'glyphicons'});
+            $('select[name="colorpicker-modal-inline"]').simplecolorpicker();
+            $('select[name="colorpicker-modal-picker"]').simplecolorpicker({picker: true});
+            $('select[name="colorpicker-option-selected"]').simplecolorpicker({theme: 'glyphicons'});
+            $('select[name="colorpicker-options-disabled"]').simplecolorpicker({theme: 'glyphicons'});
+            $('select[name="colorpicker-option-selected-disabled"]').simplecolorpicker({theme: 'glyphicons'});
+            $('select[name="colorpicker-optgroups"]').simplecolorpicker();
+            $('select[name="colorpicker-change-background-color"]').simplecolorpicker();
+            $('select[name="colorpicker-selectColor-#fbd75b"]').simplecolorpicker({theme: 'glyphicons'});
+            $('select[name="colorpicker-selectColor-#FBD75B"]').simplecolorpicker({theme: 'glyphicons'});
+            $('select[name="colorpicker-selectColor-#fbd75b-multiple"]').simplecolorpicker({theme: 'glyphicons'});
+            $('select[name="colorpicker-selectColor-unknown"]').simplecolorpicker({theme: 'glyphicons'});
+
+            $('select[name="colorpicker-picker-shortlist"]').simplecolorpicker({picker: true, theme: 'glyphicons'});
+            $('select[name="colorpicker-picker-longlist"]').simplecolorpicker({picker: true, theme: 'glyphicons'});
+            $('select[name="colorpicker-picker-delay"]').simplecolorpicker({
+                picker: true,
+                theme: 'glyphicons',
+                pickerDelay: 1000
+            });
+            $('select[name="colorpicker-picker-option-selected"]').simplecolorpicker({
+                picker: true,
+                theme: 'glyphicons'
+            });
+            $('select[name="colorpicker-picker-options-disabled"]').simplecolorpicker({
+                picker: true,
+                theme: 'glyphicons'
+            });
+            $('select[name="colorpicker-picker-option-selected-disabled"]').simplecolorpicker({
+                picker: true,
+                theme: 'glyphicons'
+            });
+            $('select[name="colorpicker-picker-optgroups"]').simplecolorpicker({picker: true, theme: 'glyphicons'});
+            $('select[name="colorpicker-picker-selectColor-#fbd75b"]').simplecolorpicker({
+                picker: true,
+                theme: 'glyphicons'
+            });
+            $('select[name="colorpicker-picker-selectColor-unknown"]').simplecolorpicker({
+                picker: true,
+                theme: 'glyphicons'
+            });
+        });
+
+        $('#initColorPalette').trigger('click');
+    });
+</script>
+
+<script>
+    function hlpbtnChange() {
+        if (($("#hlpbtn").prop("checked"))) {
+            $('#onlyForPaintRoute').css("display","block");
+        } else {
+            $('#onlyForPaintRoute').css("display","none");
+        }
+    }
+</script>
+
+<div id="map"></div>
+
+
+<script th:inline="javascript">
+    let signInData = [[${signInData}]];
+    let route;
+    let nameText = signInData.user.userName;
+    $('#userName').text(nameText);
+</script>
+
+<canvas id="draw-canvas">
+</canvas>
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=9c31ef42-bb24-4bc5-9d10-5a4ec79d2433"
+        type="text/javascript"></script>
+<script>
+    ymaps.modules.define('ext.paintOnMap', ['meta', 'util.extend', 'pane.EventsPane', 'Event'], function (provide, meta, extend, EventsPane, Event) {
+        'use strict';
+
+        let EVENTS_PANE_ZINDEX = 500;
+
+        let DEFAULT_UNWANTED_BEHAVIORS = ['drag', 'scrollZoom'];
+        let DEFAULT_STYLE = {strokeColor: '#0000ff', strokeWidth: 1, strokeOpacity: 1};
+        let DEFAULT_TOLERANCE = 16;
+
+        let badFinishPaintingCall = function () {
+            throw new Error('(ymaps.ext.paintOnMap) некорректный вызов PaintingProcess#finishPaintingAt. Рисование уже завершено.');
+        };
+
+        function paintOnMap(map, positionOrEvent, config) {
+            config = config || {};
+            let style = extend(DEFAULT_STYLE, config.style || {});
+
+            let unwantedBehaviors = config.unwantedBehaviors === undefined ?
+                DEFAULT_UNWANTED_BEHAVIORS : config.unwantedBehaviors;
+
+            let pane = new EventsPane(map, {
+                css: {position: 'absolute', width: '100%', height: '100%'},
+                zIndex: EVENTS_PANE_ZINDEX + 50,
+                transparent: true
+            });
+
+            map.panes.append('ext-paint-on-map', pane);
+
+            if (unwantedBehaviors) {
+                map.behaviors.disable(unwantedBehaviors);
+            }
+
+            let canvas = document.createElement('canvas');
+            let ctx2d = canvas.getContext('2d');
+            let rect = map.container.getParentElement().getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+
+            ctx2d.globalAlpha = style.strokeOpacity;
+            ctx2d.strokeStyle = style.strokeColor;
+            ctx2d.lineWidth = style.strokeWidth;
+
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+
+
+            pane.getElement().appendChild(canvas);
+
+            let firstPosition = positionOrEvent ? toPosition(positionOrEvent) : null;
+            let coordinates = firstPosition ? [firstPosition] : [];
+
+
+            let bounds = map.getBounds();
+
+            let latDiff = bounds[1][0] - bounds[0][0];
+            let lonDiff = bounds[1][1] - bounds[0][1];
+
+
+            canvas.onmousemove = function (e) {
+                coordinates.push([e.offsetX, e.offsetY]);
+
+                ctx2d.clearRect(0, 0, canvas.width, canvas.height);
+                ctx2d.beginPath();
+
+                ctx2d.moveTo(coordinates[0][0], coordinates[0][1]);
+                for (let i = 1; i < coordinates.length; i++) {
+                    ctx2d.lineTo(coordinates[i][0], coordinates[i][1]);
+                }
+
+                ctx2d.stroke();
+            }.bind(this);
+
+            let paintingProcess = {
+                finishPaintingAt: function (positionOrEvent) {
+                    paintingProcess.finishPaintingAt = badFinishPaintingCall;
+
+                    if (positionOrEvent) {
+                        coordinates.push(toPosition(positionOrEvent));
+                    }
+
+                    map.panes.remove(pane);
+                    if (unwantedBehaviors) {
+                        map.behaviors.enable(unwantedBehaviors);
+                    }
+
+                    let tolerance = config.tolerance === undefined ? DEFAULT_TOLERANCE : Number(config.tolerance);
+                    if (tolerance) {
+                        coordinates = simplify(coordinates, tolerance);
+                    }
+
+                    return coordinates.map(function (x) {
+                        let lon = bounds[0][1] + (x[0] / canvas.width) * lonDiff;
+                        let lat = bounds[0][0] + (1 - x[1] / canvas.height) * latDiff;
+
+                        return meta.coordinatesOrder === 'latlong' ? [lat, lon] : [lon, lat];
+                    });
+                }
+            };
+
+            return paintingProcess;
+        }
+
+        function toPosition(positionOrEvent) {
+            return positionOrEvent instanceof Event ?
+                [positionOrEvent.get('offsetX'), positionOrEvent.get('offsetY')] :
+                positionOrEvent;
+        }
+
+        function simplify(coordinates, tolerance) {
+            let toleranceSquared = tolerance * tolerance;
+            let simplified = [coordinates[0]];
+
+            let prev = coordinates[0];
+            for (let i = 1; i < coordinates.length; i++) {
+                let curr = coordinates[i];
+                if (Math.pow(prev[0] - curr[0], 2) + Math.pow(prev[1] - curr[1], 2) > toleranceSquared) {
+                    simplified.push(curr);
+                    prev = curr;
+                }
+            }
+
+            return simplified;
+        }
+
+        provide(paintOnMap);
+    });
+</script>
+
+
+
+
+<script>
+
+
+    let youCanChangeColor = false;
+
+    let promise = new Promise(function (resolve, reject) {
+        ymaps.ready(['ext.paintOnMap']).then(() => {
+            let geolocation = ymaps.geolocation;
+            let map = new ymaps.Map('map', {
+                center: [55.75, 37.62],
+                zoom: 12,
+                controls: ['zoomControl']
+            }, {
+                searchControlProvider: 'yandex#search'
+            });
+            geolocation.get({
+                provider: 'browser',
+                mapStateAutoApply: true
+            }).then((result) => {
+                result.geoObjects.options.set('preset', 'islands#blueCircleIcon');
+                map.geoObjects.add(result.geoObjects);
+            });
+            resolve(map);
+        });
+    });
+    let myMap;
+    promise.then(
+        result => {
+            let styles;
+            myMap = result;
+            let southWestX;
+            let southWestY;
+            let northEastX;
+            let northEastY;
+
+            function boundOfMap(myMap) {
+                southWestX = myMap.getBounds()[0][0];
+                southWestY = myMap.getBounds()[0][1];
+                northEastX = myMap.getBounds()[1][0];
+                northEastY = myMap.getBounds()[1][1];
+            }
+
+            let timerID;
+
+            myMap.onmouseup = function () {
+                if (paintProcess == null) {
+                    newParseRouteAndDraw = true;
+                    getRoutesFromArea(width);
+                    newParseRouteAndDraw = false;
+                    setTimeout(() => {
+                        clearInterval(timerID)
+                    }, 1);
+                }
+            }
+
+            myMap.onmousedown = function () {
+                newParseRouteAndDraw = true;
+                timerID = setInterval(() =>
+                    getRoutesFromArea, 800);
+            }
+
+
+            let ourGeoObjects = new ymaps.GeoObjectCollection({}, {
+                preset: "islands#redCircleIcon",
+                strokeWidth: 4,
+                geodesic: true
+            });
+
+            let changeZoom = false;
+
+            myMap.events.add('boundschange', function (event) {
+                if (event.get('newZoom') != event.get('oldZoom')) {
+                    if (changeZoom == false) {
+                        myMap.setZoom(14);
+                        changeZoom = true;
+                    }
+                    if (myMap.getZoom() <= 9) {
+                        width = 0;
+                    } else if (myMap.getZoom() == 10) {
+                        width = 2;
+                    } else if (myMap.getZoom() == 11) {
+                        width = 4;
+                    } else if (myMap.getZoom() == 12) {
+                        width = 6;
+                    } else if (myMap.getZoom() == 13) {
+                        width = 8;
+                    } else {
+                        width = 8;
+                    }
+
+                    youHaveOtherZoom = true;
+
+                    getRoutesFromArea(width);
+
+                }
+            });
+
+            let HintLayout = ymaps.templateLayoutFactory.createClass(
+                "<div class='my-hint'>" +
+                "<div class='route-info-table'>" +
+                "   <div class='d-flex justify-content-center'>" +
+                "       <div><b class='route-name'>{{ properties.routeName }}</b></div>" +
+                "   </div>" +
+                "   <div class='d-flex justify-content-center'>" +
+                "       <div>{{properties.routeShortDescription}}</div>" +
+                "   </div>" +
+                "</div>" +
+                "<div class='stars-outer'>" +
+                "  <div class='stars-inner' id='hintRating'></div>" +
+                "</div>" +
+                "<table class='rating-table'>" +
+                "  <tr>" +
+                "   <td><span class='number-rating'></span></td>" +
+                "  </tr>" +
+                "</table>" +
+                "</div>", {
+
+                    getShape: function () {
+                        var el = this.getElement(),
+                            result = null;
+                        if (el) {
+                            var firstChild = el.firstChild;
+                            result = new ymaps.shape.Rectangle(
+                                new ymaps.geometry.pixel.Rectangle([
+                                    [0, 0],
+                                    [firstChild.offsetWidth, firstChild.offsetHeight]
+                                ])
+                            );
+                        }
+                        let j = 0;
+                        for (let i = 0; i < ourGeoObjects.getLength(); i++) {
+                            if (ourGeoObjects.get(i).state._data.hover) {
+                                j = i;
+                            }
+                        }
+                        const rating = ourGeoObjects.get(j).properties._data.averageRouteMark;
+
+                        const starPercentage = `${(rating / 5) * 100}%`;
+
+                        $('#hintRating').css({
+                            'width': starPercentage
+                        });
+                        if (rating == 0 || !rating) {
+                            $('.number-rating').text("no reviews");
+                        } else {
+                            $('.number-rating').text(rating.toFixed(1) + " from 5.0");
+                        }
+                        return result;
+                    }
+                }
+            );
+
+            function newDrawPaintVersion2(data,width){
+                for (let i = 0; i < data.length; i++) {
+
+                    let temp = data[i].routeID;
+
+                    arrNeedIndex.push(temp);
+                    if (arrIndexInArea.indexOf(temp) == -1) {
+                        console.log(width);
+                        let routePhotos = data[i].photos;
+                        let arrPoints = [];
+                        let routeName = data[i].routeName;
+                        let routeShortDescription = data[i].routeShortDescription;
+                        let routeFullDescription = data[i].routeFullDescription;
+                        let averageRouteMark = data[i].averageRouteMark;
+                        let reviews = data[i].reviews;
+                        let colorFromDB = data[i].color;
+                        for (let j = 0; j < data[i].points.length; j++) {
+                            let cellPoints = new Array(2);
+                            cellPoints[0] = data[i].points[j].pointX;
+                            cellPoints[1] = data[i].points[j].pointY;
+                            arrPoints[j] = cellPoints;
+                        }
+                        styles =
+                            {
+                                strokeColor: colorFromDB,
+                                strokeOpacity: 0.6,
+                                strokeWidth: width,
+                                fillColor: colorFromDB,
+                                fillOpacity: 0.3,
+                                hintLayout: HintLayout
+                            };
+                        geoObject = new ymaps.Polyline(arrPoints, {
+                            routeName: routeName,
+                            routeShortDescription: routeShortDescription,
+                            routeFullDescription: routeFullDescription,
+                            averageRouteMark: averageRouteMark,
+                            routeID: temp,
+                            routePhotos: routePhotos,
+                            reviews: reviews
+                        }, styles);
+                        ourGeoObjects.add(geoObject);
+
+                        myMap.geoObjects.add(ourGeoObjects);
+
+                        setOnClick();
+                    }
+
+                }
+            }
+
+            function parserRoutesAndPaint(data, width) {
+
+                if (newParseRouteAndDraw == true) {
+                    newDrawPaintVersion2(data, width);
+
+                    arrIndexInArea = arrNeedIndex;
+                    arrNeedIndex = [];
+                }
+
+                let iterator = ourGeoObjects.getIterator(),
+                    object;
+                while ((object = iterator.getNext()) != iterator.STOP_ITERATION) {
+                    myMap.geoObjects.remove(object);
+                }
+                ourGeoObjects.removeAll();
+                for (let i = 0; i < data.length; i++) {
+                    let temp = data[i].routeID;
+                    let routePhotos = data[i].photos;
+                    let arrPoints = [];
+                    let routeName = data[i].routeName;
+                    let routeShortDescription = data[i].routeShortDescription;
+                    let routeFullDescription = data[i].routeFullDescription;
+                    let averageRouteMark = data[i].averageRouteMark;
+                    let reviews = data[i].reviews;
+                    let colorFromDB = data[i].color;
+                    for (let j = 0; j < data[i].points.length; j++) {
+                        let cellPoints = new Array(2);
+                        cellPoints[0] = data[i].points[j].pointX;
+                        cellPoints[1] = data[i].points[j].pointY;
+                        arrPoints[j] = cellPoints;
+                    }
+
+                    styles =
+                        {
+                            strokeColor: colorFromDB,
+                            strokeOpacity: 0.6,
+                            strokeWidth: width,
+                            fillColor: colorFromDB,
+                            fillOpacity: 0.3,
+                            hintLayout: HintLayout
+                        };
+
+                    geoObject = new ymaps.Polyline(arrPoints, {
+                        routeName: routeName,
+                        routeShortDescription: routeShortDescription,
+                        routeFullDescription: routeFullDescription,
+                        averageRouteMark: averageRouteMark,
+                        routeID: temp,
+                        routePhotos: routePhotos,
+                        reviews: reviews
+                    }, styles);
+                    ourGeoObjects.add(geoObject);
+                }
+
+                myMap.geoObjects.add(ourGeoObjects);
+                if (youHaveOtherZoom == true) {
+                    myMap.geoObjects.remove(tempRoute);
+                    tempRoute = new ymaps.Polyline(fullCoord, {}, {
+                        strokeColor: $('#initColorPalette').val(),
+                        strokeOpacity: 0.6,
+                        strokeWidth: width,
+                        fillColor: $('#initColorPalette').val(),
+                        fillOpacity: 0.3,
+                        hintLayout: HintLayout
+                    });
+                    tempColor = $('#initColorPalette').val();
+                    myMap.geoObjects.add(tempRoute);
+                }
+                youHaveOtherZoom = false;
+                setOnClick();
+            }
+
+            function setOnClick() {
+
+                for (let i = 0; i < ourGeoObjects.getLength(); i++) {
+                    let routeID = ourGeoObjects.get(i).properties._data.routeID;
+                    ourGeoObjects.get(i).events.add("click", function () {
+                        $('#routeInfoModal').modal('show');
+
+                        function showalert(message, alerttype) {
+
+                            $('#alert_placeholder').append('<div id="alertdiv" class="alert ' + alerttype + '"><a class="close" data-dismiss="alert">×</a><span>' + message + '</span></div>')
+
+                            setTimeout(function () { // this will automatically close the alert and remove this if the users doesnt close it in 5 secs
+
+
+                                $("#alertdiv").remove();
+
+                            }, 5000);
+                        }
+
+                        $('#reviewService').collapse('hide');
+                        $('#toggl-btn').on('click', function () {
+                            if ($('#toggl-btn').text() == "Cancel") {
+                                $('#toggl-btn').text("Add new review");
+                                $('#reviewTextArea').val("");
+                                $('#star-rating-1').attr("checked", true);
+                                $('#star-rating-1').attr("checked", false);
+                                $('#star-rating-2').attr("checked", true);
+                                $('#star-rating-2').attr("checked", false);
+                                $('#star-rating-3').attr("checked", true);
+                                $('#star-rating-3').attr("checked", false);
+                                $('#star-rating-4').attr("checked", true);
+                                $('#star-rating-4').attr("checked", false);
+                                $('#star-rating-5').attr("checked", true);
+                                $('#star-rating-5').attr("checked", false);
+                                $('#star-rating-0').attr("checked", true);
+                                $('#star-rating-0').attr("checked", false);
+                                $('#reviewService').collapse('hide');
+                            } else {
+                                $('#toggl-btn').text("Cancel");
+                                $('#reviewService').collapse('show');
+                            }
+                        });
+                        $("label[for='star-rating-0']").css('display', 'none');
+                        $('#addReviewBtn').off('click');
+                        $('#addReviewBtn').on('click', function () {
+                            let reviewText = $("#reviewTextArea").val();
+                            let mark;
+                            if (!$("#routeForm input[type='radio']:checked").val()) {
+                                mark = 0.0;
+                            } else {
+                                mark = $("#routeForm input[type='radio']:checked").val();
+                            }
+                            let ourRouteID = route.properties._data.routeID;
+                            let userID = signInData.user.userID;
+                            $.getJSON('http://localhost:8080/valid/validReview?userID=' + userID + '&routeID=' + ourRouteID
+                                + '&reviewText=' + reviewText + '&routeMark=' + mark, function (data) {
+                                if (!data.routeMark) {
+                                    showalert("You must select a route mark!", 'alert-danger');
+                                } else if (!data.reviewText) {
+                                    showalert("Route text must have <= 255 symbols!", 'alert-danger');
+                                } else if (!data.userID) {
+                                    showalert("You can write only one review to the route!", 'alert-danger');
+                                } else {
+                                    $.ajax({
+                                        url: 'http://localhost:8080/reviews/addReview',
+                                        type: 'POST',
+                                        data: {
+                                            userID: userID,
+                                            routeID: ourRouteID,
+                                            routeMark: mark,
+                                            reviewText: reviewText
+                                        },
+                                        success:
+                                            function () {
+                                                $.getJSON('http://localhost:8080/reviews/' + route.properties._data.routeID + '/getMark', function (data) {
+                                                    console.log(data);
+                                                    $('#routeRatingInfo').css({
+                                                        'width': `${(data / 5) * 100}%`
+                                                    });
+                                                    $('#rating-num').text(data.toFixed(1) + " from 5.0");
+                                                    $.getJSON('http://localhost:8080/reviews/findByRouteID/' + route.properties._data.routeID, function (d) {
+                                                        let UPDMark = 0;
+                                                        for (let i = 0; i < d.length;i++) {
+                                                            UPDMark += d[i].routeMark;
+                                                        }
+                                                        route.properties._data.averageRouteMark = UPDMark / d.length;
+                                                        workWithReviews(route, d);
+                                                    });
+                                                });
+                                            },
+                                        error: function () {
+                                            $('#toastOfError').toast('show');
+                                        }
+
+                                    });
+                                    $('#reviewTextArea').val("");
+                                    $('#star-rating-1').attr("checked", true);
+                                    $('#star-rating-1').attr("checked", false);
+                                    $('#star-rating-2').attr("checked", true);
+                                    $('#star-rating-2').attr("checked", false);
+                                    $('#star-rating-3').attr("checked", true);
+                                    $('#star-rating-3').attr("checked", false);
+                                    $('#star-rating-4').attr("checked", true);
+                                    $('#star-rating-4').attr("checked", false);
+                                    $('#star-rating-5').attr("checked", true);
+                                    $('#star-rating-5').attr("checked", false);
+                                    $('#star-rating-0').attr("checked", true);
+                                    $('#star-rating-0').attr("checked", false);
+                                    $('#toggl-btn').text("Add new review");
+                                    $('#reviewService').collapse('hide');
+                                    // $('#cancelRouteInfo').click();
+                                    //$('#ReviewModal').modal('show');
+                                }
+                            });
+                        });
+
+                        if (signInData.user) {
+
+                            $('#del-my-route').css("display", "none");
+                            $('#update-my-route').css("display", "none");
+
+                            $.getJSON('http://localhost:8080/routes/findByUserIDAndRouteID/' + signInData.user.userID + '/'
+                                + routeID, function (data) {
+                                if (!data) {
+                                    $('#del-my-route').css("display", "none");
+                                } else {
+                                    $('#del-my-route').css("display", "block");
+                                    $('#update-my-route').css("display", "block");
+                                    $('#del-my-route').off("click");
+                                    $('#del-my-route').on("click", function () {
+                                        $.ajax({
+                                            url: 'http://localhost:8080/routes/' + routeID,
+                                            type: 'DELETE',
+                                            success: function (data) {
+                                                $('#routeEditModal').modal('hide');
+                                                $('#cancelRouteInfo').click();
+                                                $('#routeModalDel').modal('show');
+                                            }
+
+                                        });
+                                        $('#toggl-btn2').text("Edit my review");
+                                        $('#reviewService2').collapse('hide');
+                                    });
+
+
+                                }
+                            });
+                        }
+
+                        $('#prev3reviews').off("click");
+                        $('#next3reviews').off("click");
+                        $('#prevPhoto').off("click");
+                        $('#nextPhoto').off("click");
+                        $('#routeInfoModalLabel').text(ourGeoObjects.get(i).properties._data.routeName);
+                        const rating = ourGeoObjects.get(i).properties._data.averageRouteMark;
+
+                        const starPercentage = `${(rating / 5) * 100}%`;
+
+                        $('#routeRatingInfo').css({
+                            'width': starPercentage
+                        });
+                        if (rating == 0 || !rating) {
+                            $('#rating-num').text("no reviews");
+                        } else {
+                            $('#rating-num').text(rating.toFixed(1) + " from 5.0");
+                        }
+                        $('#short-desc').text(ourGeoObjects.get(i).properties._data.routeShortDescription);
+                        $('#full-desc').text(ourGeoObjects.get(i).properties._data.routeFullDescription);
+                        route = ourGeoObjects.get(i);
+                        let photos = ourGeoObjects.get(i).properties._data.routePhotos;
+                        if (photos.length == 0) {
+                            $("#prevPhoto").css("display", "none");
+                            $("#nextPhoto").css("display", "none");
+                            $('#photos').html('<div class="d-flex justify-content-center">There are no photos</div>');
+                        } else {
+                            $("#prevPhoto").css("display", "block");
+                            $("#nextPhoto").css("display", "block");
+                            $('#photos').html('<img class="route-img" id="photoIm">');
+                            $('#photoIm').attr("src", /img/ + photos[0].photoName);
+                            if (photos.length == 1) {
+                                $("#prevPhoto").css("display", "none");
+                                $("#nextPhoto").css("display", "none");
+                            } else {
+                                $("#prevPhoto").css("display", "block");
+                                $("#nextPhoto").css("display", "block");
+                            }
+                            $('#prevPhoto').attr("disabled", true);
+                            $("#nextPhoto").attr("disabled", false);
+                            let l = 0;
+                            $('#nextPhoto').on('click', function () {
+                                l++;
+                                $('#prevPhoto').attr("disabled", false);
+                                if (l == photos.length - 1) {
+                                    $('#nextPhoto').attr("disabled", true);
+                                } else {
+                                    $('#nextPhoto').attr("disabled", false);
+                                }
+                                $('#photos').html('<img class="route-img" id="photoIm">');
+                                $('#photoIm').attr("src", /img/ + photos[l].photoName);
+                            });
+                            $('#prevPhoto').on('click', function () {
+                                l--;
+                                $('#nextPhoto').attr("disabled", false);
+                                if (l == 0) {
+                                    $('#prevPhoto').attr("disabled", true);
+                                } else {
+                                    $('#prevPhoto').attr("disabled", false);
+                                }
+                                $('#photos').html('<img class="route-img" id="photoIm">');
+                                $('#photoIm').attr("src", /img/ + photos[l].photoName);
+                            });
+                        }
+                        workWithReviews(ourGeoObjects.get(i), ourGeoObjects.get(i).properties._data.reviews);
+
+                    });
+
+                }
+            }
+
+            function workWithReviews(thisRoute, reviews) {
+                $('#my-rev').css("display", "none");
+                $('#prev3reviews').css("display", "none");
+                $('#next3reviews').css("display", "none");
+                $('#prev3reviews').off('click');
+                $('#next3reviews').off('click');
+                if (signInData.user) {
+
+
+                    $.getJSON('http://localhost:8080/reviews/' + thisRoute.properties._data.routeID + '/' + signInData.user.userID,
+                        function (data) {
+                            if (data.length == 0) {
+                                $('#show-my-rev').off("click");
+                                $('#show-all-rev').off("click");
+                                $('#show-my-rev').css("display", "none");
+                                $('#add-rev-col').css("display", "block");
+                                $('#all-rev').css("display", "block");
+                                $('#show-all-rev').css("display", "none");
+                                $('#my-rev').css("display", "none");
+                                $('#del-my-rev').css("display", "none");
+                                $('#change-my-rev').css("display", "none");
+                                if (reviews.length > 3) {
+                                    $('#prev3reviews').css("display", "block");
+                                    $('#next3reviews').css("display", "block");
+                                } else {
+                                    $('#prev3reviews').css("display", "none");
+                                    $('#next3reviews').css("display", "none");
+                                }
+                            } else {
+                                $('#del-my-rev').css("display", "none");
+                                $('#change-my-rev').css("display", "none");
+                                $('#show-my-rev').off("click");
+                                $('#show-my-rev').css("display", "block");
+                                $('#add-rev-col').css("display", "none");
+                                if (reviews.length > 3) {
+                                    $('#prev3reviews').css("display", "block");
+                                    $('#next3reviews').css("display", "block");
+                                } else {
+                                    $('#prev3reviews').css("display", "none");
+                                    $('#next3reviews').css("display", "none");
+                                }
+                                $('#all-rev').css("display", "block");
+                                $('#show-all-rev').css("display", "none");
+                                $('#my-rev').css("display", "none");
+                                $('#show-my-rev').on("click", function () {
+                                    $('#del-my-rev').css("display", "block");
+                                    $('#change-my-rev').css("display", "block");
+                                    $('#my-rev').css("display", "block");
+                                    $('#all-rev').css("display", "none");
+                                    $('#prev3reviews').css("display", "none");
+                                    $('#next3reviews').css("display", "none");
+                                    $('#show-my-rev').css("display", "none");
+                                    $('#show-all-rev').css("display", "block");
+                                    $.getJSON('http://localhost:8080/reviews/' + thisRoute.properties._data.routeID + '/' + signInData.user.userID,
+                                    function(data){
+                                        $.getJSON('http://localhost:8080/users/' + data[0].userID, function (d) {
+                                            $('#my-review-name').text(d.userName);
+                                        });
+                                        $('#my-review-date').text(data[0].reviewDate);
+                                        const starPercentage = `${(data[0].routeMark / 5) * 100}%`;
+                                        $('#my-review-rate').css({
+                                            'width': starPercentage
+                                        });
+
+                                        if (!data[0].reviewText) {
+                                            $('#my-rev-text').css("display", "none");
+                                        } else {
+                                            $('#my-rev-text').css("display", "block");
+                                            $('#my-review-textt').text(data[0].reviewText);
+                                        }
+                                    });
+
+                                });
+
+
+                                $('#del-my-rev').off("click");
+                                $('#del-my-rev').on("click", function () {
+                                    $.ajax({
+                                        url: 'http://localhost:8080/reviews/deleteReview/' + data[0].reviewID,
+                                        type: 'DELETE',
+                                        success: function (data) {
+                                            $('#del-my-rev').css("display", "none");
+                                            $('#change-my-rev').css("display", "none");
+                                            if (reviews.length == 1) {
+                                                $('#routeRatingInfo').css({
+                                                    'width': `${0}%`
+                                                });
+                                                $('#rating-num').text("no reviews");
+                                            }
+                                            $.getJSON('http://localhost:8080/reviews/' + route.properties._data.routeID + '/getMark', function (data) {
+                                                console.log("mark ", data);
+                                                    $('#routeRatingInfo').css({
+                                                        'width': `${(data / 5) * 100}%`
+                                                    });
+                                                    $('#rating-num').text(data.toFixed(1) + " from 5.0");
+
+
+                                            });
+                                            $.getJSON('http://localhost:8080/reviews/findByRouteID/' + route.properties._data.routeID, function (data) {
+                                                $('#show-all-rev').css("display", "none");
+                                                $('#show-all-rev').click();
+                                                $('#show-my-rev').css("display", "none");
+                                                $('#add-rev-col').css("display", "block");
+                                                reviews = data;
+                                                $('#my-rev').css("display", "none");
+                                                $('#prev3reviews').css("display", "none");
+                                                $('#next3reviews').css("display", "none");
+                                                if (reviews.length == 0) {
+                                                    $("#list-rev-1").css("display", "none");
+                                                    $("#list-rev-2").css("display", "none");
+                                                    $("#list-rev-3").css("display", "none");
+                                                    $("#next3reviews").css("display", "none");
+                                                    $("#prev3reviews").css("display", "none");
+                                                    $('#noreview').html('<div class="col-md-auto">There are no reviews</div>');
+                                                } else {
+                                                    $('#noreview').html('<div></div>');
+                                                    $("#list-rev-1").css("display", "block");
+                                                    $("#list-rev-2").css("display", "block");
+                                                    $("#list-rev-3").css("display", "block");
+                                                    $("#next3reviews").css("display", "block");
+                                                    $("#prev3reviews").css("display", "block");
+                                                    reviews.sort(function (a, b) {
+                                                        return b.reviewID - a.reviewID
+                                                    });
+                                                    j = 0;
+                                                    k = 3;
+                                                    $("#prev3reviews").attr("disabled", true);
+                                                    $("#next3reviews").attr("disabled", false);
+                                                    if (reviews.length < 3) {
+                                                        k = reviews.length;
+                                                        for (let h = k + 1; h <= 3; h++) {
+                                                            $('#' + 'list-rev-' + h).css("display", "none");
+                                                        }
+                                                    }
+                                                    if (reviews.length <= 3) {
+                                                        $("#next3reviews").css("display", "none");
+                                                        $("#prev3reviews").css("display", "none");
+                                                    } else {
+                                                        $("#next3reviews").css("display", "block");
+                                                        $("#prev3reviews").css("display", "block");
+                                                        for (let h = 1; h <= 3; h++) {
+                                                            $('#' + 'list-rev-' + h).css("display", "block");
+                                                        }
+                                                    }
+                                                    for (let z = 0; z < k; z++) {
+                                                        $.getJSON('http://localhost:8080/users/' + reviews[z].userID, function (data) {
+                                                            $('#' + 'review-name-' + (z + 1)).text(data.userName);
+                                                        });
+                                                        $('#' + 'review-date-' + (z + 1)).text(reviews[z].reviewDate);
+
+                                                        const starPercentage = `${(reviews[z].routeMark / 5) * 100}%`;
+
+                                                        $('#' + 'review-rate-' + (z + 1)).css({
+                                                            'width': starPercentage
+                                                        });
+
+                                                        if (!reviews[z].reviewText) {
+                                                            $('#' + 'rev-text-' + (z + 1)).css("display", "none");
+                                                        } else {
+                                                            $('#' + 'rev-text-' + (z + 1)).css("display", "block");
+                                                            $('#' + 'review-text-' + (z + 1)).text(reviews[z].reviewText);
+                                                        }
+                                                    }
+                                                }
+
+                                            });
+                                        },
+                                        error: function () {
+                                            $('#toastOfError').toast('show');
+                                        }
+                                    });
+                                });
+
+                                function showalert2(message, alerttype) {
+
+                                    $('#alert_placeholder2').append('<div id="alertdiv2" class="alert ' + alerttype + '"><a class="close" data-dismiss="alert">×</a><span>' + message + '</span></div>')
+
+                                    setTimeout(function () { // this will automatically close the alert and remove this if the users doesnt close it in 5 secs
+
+
+                                        $("#alertdiv2").remove();
+
+                                    }, 5000);
+                                }
+
+                                $('#reviewService2').collapse('hide');
+                                $('#toggl-btn2').on('click', function () {
+                                    if ($('#toggl-btn2').text() == "Cancel") {
+
+                                        $('#reviewTextArea2').val("");
+                                        $('#star-rating-12').attr("checked", true);
+                                        $('#star-rating-12').attr("checked", false);
+                                        $('#star-rating-22').attr("checked", true);
+                                        $('#star-rating-22').attr("checked", false);
+                                        $('#star-rating-32').attr("checked", true);
+                                        $('#star-rating-32').attr("checked", false);
+                                        $('#star-rating-42').attr("checked", true);
+                                        $('#star-rating-42').attr("checked", false);
+                                        $('#star-rating-52').attr("checked", true);
+                                        $('#star-rating-52').attr("checked", false);
+                                        $('#star-rating-02').attr("checked", true);
+                                        $('#star-rating-02').attr("checked", false);
+                                        $('#toggl-btn2').text("Edit my review");
+                                        $('#reviewService2').collapse('hide');
+
+                                    } else {
+                                        $('#reviewService2').collapse('show');
+                                        $('#toggl-btn2').text("Cancel");
+                                    }
+                                });
+                                $("label[for='star-rating-02']").css('display', 'none');
+                                $('#addReviewBtn2').off('click');
+                                $('#addReviewBtn2').on('click', function () {
+                                    let reviewText = $("#reviewTextArea2").val();
+                                    let mark;
+                                    if (!$("#routeForm2 input[type='radio']:checked").val()) {
+                                        mark = 0.0;
+                                    } else {
+                                        mark = $("#routeForm2 input[type='radio']:checked").val();
+                                    }
+                                    let ourRouteID2 = route.properties._data.routeID;
+                                    let ourReviewID = data[0].reviewID;
+                                    let oldMark = route.properties._data.averageRouteMark;
+
+                                    let revIndex;
+                                    for (let i = 0;i < reviews.length; i++) {
+                                        if (reviews[i].reviewID == ourReviewID) {
+                                            if (mark) {
+                                                reviews[i].routeMark = parseFloat(mark);
+                                            }
+                                            if (reviewText) {
+                                                reviews[i].reviewText = reviewText;
+                                            }
+                                            revIndex = i;
+                                        }
+                                    }
+
+                                    let userID = signInData.user.userID;
+                                    $.getJSON('http://localhost:8080/valid/validReview?userID=' + userID + '&routeID=' + ourRouteID2
+                                        + '&reviewText=' + reviewText + '&routeMark=' + mark, function (data) {
+                                        if (!data.reviewText) {
+                                            showalert("Route text must have <= 255 symbols!", 'alert-danger');
+                                        } else {
+                                            $.ajax({
+                                                url: 'http://localhost:8080/reviews/updateReview/' + ourReviewID,
+                                                type: 'PUT',
+                                                data: {routeMark: mark, reviewText: reviewText},
+                                                success:
+                                                    $.getJSON('http://localhost:8080/reviews/' + ourRouteID2 + '/getMark', function (data) {
+                                                        console.log(oldMark + " " +data);
+                                                        if (data != oldMark && reviews.length != 1) {
+                                                            $('#routeRatingInfo').css({
+                                                                'width': `${(data / 5) * 100}%`
+                                                            });
+                                                            $('#rating-num').text(data.toFixed(1) + " from 5.0");
+                                                            route.properties._data.averageRouteMark = data;
+                                                        }
+                                                        else if (reviews.length != 1){
+                                                            let newMark = 0;
+                                                            console.log(reviews);
+                                                            for (let i = 0; i < reviews.length; i++) {
+                                                                newMark += reviews[i].routeMark;
+                                                            }
+                                                            newMark /= reviews.length;
+                                                            console.log("new " + newMark);
+                                                            $('#routeRatingInfo').css({
+                                                                'width': `${(newMark / 5) * 100}%`
+                                                            });
+                                                            $('#rating-num').text(newMark.toFixed(1) + " from 5.0");
+                                                            route.properties._data.averageRouteMark = newMark;
+                                                        }
+                                                    })
+                                            });
+                                            if (reviews.length == 1) {
+                                                console.log("len 1 " + mark)
+                                                $('#routeRatingInfo').css({
+                                                    'width': `${(mark / 5) * 100}%`
+                                                });
+                                                $('#rating-num').text(mark + ".0 from 5.0");
+                                                route.properties._data.averageRouteMark = mark;
+                                            }
+                                            $('#reviewTextArea2').val("");
+                                            $('#star-rating-12').attr("checked", true);
+                                            $('#star-rating-12').attr("checked", false);
+                                            $('#star-rating-22').attr("checked", true);
+                                            $('#star-rating-22').attr("checked", false);
+                                            $('#star-rating-32').attr("checked", true);
+                                            $('#star-rating-32').attr("checked", false);
+                                            $('#star-rating-42').attr("checked", true);
+                                            $('#star-rating-42').attr("checked", false);
+                                            $('#star-rating-52').attr("checked", true);
+                                            $('#star-rating-52').attr("checked", false);
+                                            $('#star-rating-02').attr("checked", true);
+                                            $('#star-rating-02').attr("checked", false);
+                                            //   $('#toggl-btn2').text("Edit my review");
+                                            $('#reviewService2').collapse('hide');
+                                            if (mark) {
+                                                $('#my-review-rate').css({
+                                                    'width': `${(mark / 5) * 100}%`
+                                                });
+                                            }
+                                            if (reviewText) {
+                                                $('#my-rev-text').css("display", "block");
+                                                $('#my-review-textt').text(reviewText);
+                                            }
+
+                                            for (let i = 1; i <=3 ; i++) {
+                                                if ($('#' + 'review-name-' + i).text() == signInData.user.userName) {
+                                                    const starPercentage = `${(reviews[revIndex].routeMark / 5) * 100}%`;
+
+                                                    $('#' + 'review-rate-' + i).css({
+                                                        'width': starPercentage
+                                                    });
+
+                                                    if (!reviews[revIndex].reviewText) {
+                                                        $('#' + 'rev-text-' + i).css("display", "none");
+                                                    } else {
+                                                        $('#' + 'rev-text-' + i).css("display", "block");
+                                                        $('#' + 'review-text-' + i).text(reviews[revIndex].reviewText);
+                                                    }
+                                                }
+                                            }
+
+                                            $('#toggl-btn2').text("Edit my review");
+                                        }
+                                    });
+                                });
+
+                                $('#show-all-rev').off("click");
+                                $('#show-all-rev').on("click", function () {
+                                    $('#del-my-rev').css("display", "none");
+                                    $('#change-my-rev').css("display", "none");
+                                    $('#toggl-btn2').text("Edit my review");
+                                    $('#reviewService2').collapse('hide');
+
+                                    $('#all-rev').css("display", "block");
+                                    $('#my-rev').css("display", "none");
+                                    if (reviews.length > 3) {
+                                        $('#prev3reviews').css("display", "block");
+                                        $('#next3reviews').css("display", "block");
+                                    } else {
+                                        $('#prev3reviews').css("display", "none");
+                                        $('#next3reviews').css("display", "none");
+                                    }
+                                    $('#show-my-rev').css("display", "block");
+                                    $('#show-all-rev').css("display", "none");
+                                });
+                            }
+                        }
+                    );
+
+                }
+                if (reviews.length == 0) {
+                    $("#list-rev-1").css("display", "none");
+                    $("#list-rev-2").css("display", "none");
+                    $("#list-rev-3").css("display", "none");
+                    $("#next3reviews").css("display", "none");
+                    $("#prev3reviews").css("display", "none");
+                    $('#noreview').html('<div class="col-md-auto">There are no reviews</div>');
+                } else {
+                    $('#noreview').html('<div></div>');
+                    $("#list-rev-1").css("display", "block");
+                    $("#list-rev-2").css("display", "block");
+                    $("#list-rev-3").css("display", "block");
+                    $("#next3reviews").css("display", "block");
+                    $("#prev3reviews").css("display", "block");
+                    reviews.sort(function (a, b) {
+                        return b.reviewID - a.reviewID
+                    });
+                    let j = 0;
+                    let k = 3;
+                    $("#prev3reviews").attr("disabled", true);
+                    $("#next3reviews").attr("disabled", false);
+                    if (reviews.length < 3) {
+                        k = reviews.length;
+                        for (let h = k + 1; h <= 3; h++) {
+                            $('#' + 'list-rev-' + h).css("display", "none");
+                        }
+                    }
+                    if (reviews.length <= 3) {
+                        $("#next3reviews").css("display", "none");
+                        $("#prev3reviews").css("display", "none");
+                    } else {
+                        $("#next3reviews").css("display", "block");
+                        $("#prev3reviews").css("display", "block");
+                        for (let h = 1; h <= 3; h++) {
+                            $('#' + 'list-rev-' + h).css("display", "block");
+                        }
+                    }
+                    for (let z = 0; z < k; z++) {
+                        $.getJSON('http://localhost:8080/users/' + reviews[z].userID, function (data) {
+                            $('#' + 'review-name-' + (z + 1)).text(data.userName);
+                        });
+                        $('#' + 'review-date-' + (z + 1)).text(reviews[z].reviewDate);
+
+                        const starPercentage = `${(reviews[z].routeMark / 5) * 100}%`;
+
+                        $('#' + 'review-rate-' + (z + 1)).css({
+                            'width': starPercentage
+                        });
+
+                        if (!reviews[z].reviewText) {
+                            $('#' + 'rev-text-' + (z + 1)).css("display", "none");
+                        } else {
+                            $('#' + 'rev-text-' + (z + 1)).css("display", "block");
+                            $('#' + 'review-text-' + (z + 1)).text(reviews[z].reviewText);
+                        }
+                    }
+                    $('#next3reviews').on('click', function () {
+                        j++;
+                        k += 3;
+                        if (reviews.length < k) {
+                            $("#next3reviews").attr("disabled", true);
+                            k = reviews.length;
+                            for (let h = k - j * 3 + 1; h <= 3; h++) {
+                                $('#' + 'list-rev-' + h).css("display", "none");
+                            }
+                        } else {
+                            $("#next3reviews").attr("disabled", false);
+                            for (let h = 1; h <= 3; h++) {
+                                $('#' + 'list-rev-' + h).css("display", "block");
+                            }
+                        }
+                        if (reviews.length == ((j + 1) * 3)) {
+                            $("#next3reviews").attr("disabled", true);
+
+                        }
+                        $("#prev3reviews").attr("disabled", false);
+                        for (let z = j * 3; z < k; z++) {
+                            $.getJSON('http://localhost:8080/users/' + reviews[z].userID, function (data) {
+                                $('#' + 'review-name-' + (z - j * 3 + 1)).text(data.userName);
+                            });
+                            $('#' + 'review-date-' + (z - j * 3 + 1)).text(reviews[z].reviewDate);
+
+                            const starPercentage = `${(reviews[z].routeMark / 5) * 100}%`;
+
+                            $('#' + 'review-rate-' + (z - j * 3 + 1)).css({
+                                'width': starPercentage
+                            });
+
+                            if (!reviews[z].reviewText) {
+                                $('#' + 'rev-text-' + (z - j * 3 + 1)).css("display", "none");
+                            } else {
+                                $('#' + 'rev-text-' + (z - j * 3 + 1)).css("display", "block");
+                                $('#' + 'review-text-' + (z - j * 3 + 1)).text(reviews[z].reviewText);
+                            }
+                        }
+                    });
+
+                    $('#prev3reviews').on('click', function () {
+                        j--;
+                        k -= 3;
+                        if (k <= 3) {
+                            $('#prev3reviews').attr('disabled', true);
+                        } else {
+                            $('#prev3reviews').attr('disabled', false);
+                        }
+                        if (k < (j + 1) * 3) {
+                            k = (j + 1) * 3;
+                        }
+                        $("#next3reviews").attr("disabled", false);
+                        for (let h = 1; h <= 3; h++) {
+                            $('#' + 'list-rev-' + h).css("display", "block");
+                        }
+                        for (let z = j * 3; z < k; z++) {
+                            $.getJSON('http://localhost:8080/users/' + reviews[z].userID, function (data) {
+                                $('#' + 'review-name-' + (z - j * 3 + 1)).text(data.userName);
+                            });
+                            $('#' + 'review-date-' + (z - j * 3 + 1)).text(reviews[z].reviewDate);
+
+                            const starPercentage = `${(reviews[z].routeMark / 5) * 100}%`;
+
+                            $('#' + 'review-rate-' + (z - j * 3 + 1)).css({
+                                'width': starPercentage
+                            });
+
+                            if (!reviews[z].reviewText) {
+                                $('#' + 'rev-text-' + (z - j * 3 + 1)).css("display", "none");
+                            } else {
+                                $('#' + 'rev-text-' + (z - j * 3 + 1)).css("display", "block");
+                                $('#' + 'review-text-' + (z - j * 3 + 1)).text(reviews[z].reviewText);
+                            }
+                        }
+                    });
+                }
+            }
+
+            let converter = (latitude, longitude) => {
+                let projection = myMap.options.get('projection');
+                let arrPixels = myMap.converter.globalToPage(
+                    projection.toGlobalPixels(
+                        [latitude, longitude],
+                        myMap.getZoom()));
+                return arrPixels;
+            }
+
+            getRoutesFromArea = (width) => {
+                boundOfMap(myMap);
+                $.getJSON('http://localhost:8080/routes/findRoutesInTheArea?southWestX=' + southWestX
+                    + '&southWestY=' + southWestY + '&northEastX=' + northEastX
+                    + '&northEastY=' + northEastY, function (data) {
+                    parserRoutesAndPaint(data, width);
+                });
+            }
+
+            getRoutesFromArea(width);
+
+            let paintProcess = null;
+
+
+            myMap.events.add('mousedown', function (e) {
+                if (($("#hlpbtn").prop("checked"))) {
+                    paintProcess = ymaps.ext.paintOnMap(myMap, e, {
+                        style: {
+                            strokeColor: $('#initColorPalette').val(),
+                            strokeOpacity: 0.6,
+                            strokeWidth: width,
+                            fillColor: $('#initColorPalette').val(),
+                            fillOpacity: 0.3,
+                            hintLayout: HintLayout
+                        }
+                    });
+                }
+            });
+
+
+            myMap.events.add('mouseup', function (e) {
+                if (paintProcess) {
+                    coordinates = paintProcess.finishPaintingAt(e);
+                    if (fullCoord.length == 0) {
+                        fullCoord = fullCoord.concat(coordinates);
+                        paintProcess = null;
+                        tempRoute = new ymaps.Polyline(fullCoord, {}, {
+                            strokeColor: $('#initColorPalette').val(),
+                            strokeOpacity: 0.6,
+                            strokeWidth: width,
+                            fillColor: $('#initColorPalette').val(),
+                            fillOpacity: 0.3,
+                            hintLayout: HintLayout
+                        });
+                        tempColor = $('#initColorPalette').val();
+                        myMap.geoObjects.add(tempRoute);
+                    } else {
+                        let lastArrOfFullCoord = fullCoord[fullCoord.length - 1];
+                        let arrPixEnd = converter(lastArrOfFullCoord[0], lastArrOfFullCoord[1]);
+                        let firstArrOfOurCoord = coordinates[0];
+                        let arrPixBegin = converter(firstArrOfOurCoord[0], firstArrOfOurCoord[1]);
+                        let answer = Math.sqrt(Math.pow(arrPixEnd[0] - arrPixBegin[0], 2) +
+                            Math.pow(arrPixEnd[1] - arrPixBegin[1], 2));
+                        if (answer < 17.9102059583619) {
+                            fullCoord = fullCoord.concat(coordinates);
+                            paintProcess = null;
+                            myMap.geoObjects.remove(tempRoute);
+                            tempRoute = new ymaps.Polyline(fullCoord, {}, {
+                                strokeColor: $('#initColorPalette').val(),
+                                strokeOpacity: 0.6,
+                                strokeWidth: width,
+                                fillColor: $('#initColorPalette').val(),
+                                fillOpacity: 0.3,
+                                hintLayout: HintLayout
+                            });
+                            tempColor = $('#initColorPalette').val();
+                            myMap.geoObjects.add(tempRoute);
+                        } else {
+                            $('#toast1').toast('show');
+                        }
+                    }
+                }
+                youCanChangeColor = true;
+            });
+
+            changeColor = (color) => {
+                if (youCanChangeColor === true) {
+                    if (color != tempColor) {
+                        myMap.geoObjects.remove(tempRoute);
+                        tempRoute = new ymaps.Polyline(fullCoord, {}, {
+                            strokeColor: color,
+                            strokeOpacity: 0.6,
+                            strokeWidth: width,
+                            fillColor: color,
+                            fillOpacity: 0.3,
+                            hintLayout: HintLayout
+                        });
+                        myMap.geoObjects.add(tempRoute);
+                        tempColor = color;
+                    }
+                }
+            };
+
+
+            $('#cancelRouteInfo').on('click', function () {
+                getRoutesFromArea(width);
+            });
+
+        }
+    );
+
+
+    let geoObject;
+    let coordinates;
+    let getRoutesFromArea;
+    let colorRoute;
+    let width = 8;
+    let fullCoord = [];
+    let tempColor;
+    let tempRoute;
+    let newParseRouteAndDraw = false;
+    let arrIndexInArea = [];
+    let arrNeedIndex = [];
+    let youHaveOtherZoom = false;
+
+    function buttCancelClick() {
+        if (fullCoord.length == 0) {
+            $('#hlpbtn').prop('checked', false);
+            $('#onlyForPaintRoute').css("display","none");
+        } else {
+            fullCoord = [];
+            myMap.geoObjects.remove(tempRoute);
+        }
+    }
+
+    function btnFinishClick() {
+        if (fullCoord.length == 0) {
+            $('#toast2').toast('show');
+        } else {
+            $('#myModal').modal('show');
+        }
+    }
+</script>
+
+<div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Modal1Label">Route successfully added</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" data-backdrop="static" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myLargeModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <p>
+                    <h5>Add info about your route</h5>
+                    </p>
+                </div>
+                <form id="jsMaster" class="needs-validation" novalidate enctype="multipart/form-data"
+                      action="/">
+                    <div class="row">
+                        <div class="col-md-8  mt-2 ">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Route name"
+                                       aria-label="Имя получателя" aria-describedby="basic-addon2"
+                                       id="routeName" name="routeName" required minlength="3" maxlength="200"
+                                       pattern="[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9 -,!?)(=.;]+">
+                                <div class="invalid-feedback">
+                                    Please choose a route name.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8  mt-2 ">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Short description of route"
+                                       aria-label="Имя получателя" aria-describedby="basic-addon2"
+                                       id="shortDescription" name="shortDescription" required minlength="3"
+                                       pattern="[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9 -,!?)(=.;]+">
+                                <div class="invalid-feedback">
+                                    Please choose a short description of route
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8  mt-2 ">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Full description of route"
+                                       aria-label="Имя получателя" aria-describedby="basic-addon2"
+                                       id="fullDescription" name="fullDescription"
+                                       pattern="[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9 -,!?)(=.;]+" required minlength="3">
+                                <div class="invalid-feedback">
+                                    Please choose a full description of route
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="container-fluid">
+                            <div class="panel panel-default" id="fileupload_main_panel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="dropzone" id="fileUploadForm">
+                                                <span id="fileUploadStatus"> </span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-4 offset-md-9">
+                            <button type="button" id="addRoute" class="btn btn-primary"
+                                    onclick="writeRouteInDB()">
+                                Add route
+                            </button>
+
+                            <button type="submit" id="closeInMainModalWindow" class="btn btn-secondary"
+                                    onclick="closeInMainModalWindowClick()" data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let youCanAddPhoto = false;
+
+    function writeRouteInDB() {
+        if ($('#jsMaster')[0].checkValidity() == true) {
+
+            $('#hlpbtn').prop('checked', false);
+            $('#onlyForPaintRoute').css("display","none");
+
+            youCanAddPhoto = true;
+
+            $.ajax({
+                url: 'http://localhost:8080/routes/createRoute',
+                type: 'POST',
+                data: {
+                    userID: signInData.user.userID,
+                    routeName: $('#routeName').val(),
+                    routeShortDescription: $('#shortDescription').val(),
+                    routeFullDescription: $('#fullDescription').val(),
+                    points: JSON.stringify(fullCoord),
+                    color: $('#initColorPalette').val()
+                },
+                error: function () {
+                    $('#toastOfError').toast('show');
+                }
+            });
+
+            fullCoord = [];
+        }
+        $('#jsMaster')[0].classList.add('was-validated');
+
+    }
+    function closeInMainModalWindowClick() {
+        Dropzone.forElement('#fileUploadForm').removeAllFiles(true);
+        fullCoord = [];
+        myMap.geoObjects.remove(tempRoute);
+        // getRoutesFromArea(width);
+    }
+</script>
+
+
+<script type="text/javascript">
+    Dropzone.options.fileUploadForm = {
+        url: "/",
+        thumbnailWidth: 120,
+        thumbnailHeight: 120,
+        autoProcessQueue: false,
+        parallelUploads: 100,
+        maxFilesize: 10,
+        addRemoveLinks: true,
+        resizeWidth: 700,
+        resizeMethod: 'contain', resizeQuality: 1.0,
+        acceptedFiles: '.jpg,.jpeg,.png',
+        init: function () {
+
+            let myDropzone = this;
+
+            $('#addRoute').on("click", function (file) {
+                if (youCanAddPhoto === true) {
+                    myDropzone.processQueue();
+                    setTimeout(function () {
+
+                        $('#myModal').modal('hide');
+
+                        $('input[name=routeName]').val("");
+                        $('input[name=shortDescription]').val("");
+                        $('input[name=fullDescription]').val("");
+
+                        myMap.geoObjects.remove(tempRoute);
+                        newParseRouteAndDraw = true;
+                        getRoutesFromArea(width);
+                        newParseRouteAndDraw = false;
+
+                        $('#toast4').toast('show');//было toast4
+                        Dropzone.forElement('#fileUploadForm').removeAllFiles(true);
+                    }, 3000);
+                }
+            });
+        }
+
+    };
+
+</script>
+
+<div class="modal fade" id="routeInfoModal" tabindex="-1" role="dialog" aria-labelledby="routeInfoModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="routeInfoModalLabel"></h5>
+
+                <button type="button" id="cancelRouteInfo" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <script>  $('#cancelRouteInfo').on('click', function () {
+                    $('#toggl-btn2').text("Edit my review");
+                    $('#reviewService2').collapse('hide');
+                });
+                </script>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-4">
+                        <div>Rating:</div>
+                    </div>
+                    <div class="col-md-auto">
+                        <div class='stars-outer'>
+                            <div class='stars-inner' id="routeRatingInfo"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-auto">
+                        <div id="rating-num"></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-4">
+                        <div>Short description:</div>
+                    </div>
+                    <div class="col-8">
+                        <div id="short-desc"></div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-4">
+                        <div>Full description:</div>
+                    </div>
+                    <div class="col-8">
+                        <div id="full-desc"></div>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="col-4">
+                        <div>Photos:</div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <div class="col-12" id="photos">
+
+                    </div>
+                </div>
+                <div class="row justify-content-md-center" id="photoBtns">
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary mt-2" id="prevPhoto">Prev</button>
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary mt-2" id="nextPhoto">Next</button>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-4">
+                        <div>Reviews:</div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center" id="noreview"></div>
+                <div class="row justify-content-md-center" id="all-rev">
+                    <div class="col-12">
+                        <ul class="list-group">
+                            <li class="list-group-item" id="list-rev-1">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <h8 class="mb-1" id="review-name-1"></h8>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class='stars-outer'>
+                                            <div class='stars-inner' id="review-rate-1"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-auto">
+                                        <h8 id="review-date-1"></h8>
+                                    </div>
+                                </div>
+                                <div id="rev-text-1">
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-auto">
+                                            <h9 class="mb-1" id="review-text-1"></h9>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item" id="list-rev-2">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <h8 class="mb-1" id="review-name-2"></h8>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class='stars-outer'>
+                                            <div class='stars-inner' id="review-rate-2"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-auto">
+                                        <h8 id="review-date-2"></h8>
+                                    </div>
+                                </div>
+                                <div id="rev-text-2">
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-auto">
+                                            <h9 class="mb-1" id="review-text-2"></h9>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="list-group-item" id="list-rev-3">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <h8 class="mb-1" id="review-name-3"></h8>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class='stars-outer'>
+                                            <div class='stars-inner' id="review-rate-3"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-auto">
+                                        <h8 id="review-date-3"></h8>
+                                    </div>
+                                </div>
+                                <div id="rev-text-3">
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-auto">
+                                            <h9 class="mb-1" id="review-text-3"></h9>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row justify-content-md-center" id="my-rev">
+                    <div class="col-12">
+                        <ul class="list-group">
+                            <li class="list-group-item" id="my-revv">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <h8 class="mb-1" id="my-review-name"></h8>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class='stars-outer'>
+                                            <div class='stars-inner' id="my-review-rate"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-auto">
+                                        <h8 id="my-review-date"></h8>
+                                    </div>
+                                </div>
+                                <div id="my-rev-text">
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-auto">
+                                            <h9 class="mb-1" id="my-review-textt"></h9>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row justify-content-md-center">
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary mt-2" id="prev3reviews">Prev</button>
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary mt-2" id="next3reviews">Next</button>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-md-12" id="add-rev-col" th:if="${signInData.user}">
+                        <a class="btn btn-primary mt-2 buttons"  data-toggle="collapse" href="#reviewService"
+                           role="button"
+                           id="toggl-btn"
+                           aria-expanded="false"
+                           aria-controls="reviewService">Add new review</a>
+                        <div class="collapse" id="reviewService">
+                            <div class="form-group mt-3" th:if="${signInData.user}">
+                                <form name="reviewForm" id="routeForm" onsubmit="return false;">
+                                    <div class="form-row">
+                                        <div class="col-md-auto">
+                                            Route mark:
+                                        </div>
+                                        <div class="col-md-auto">
+                                            <div class="star-rating">
+                                                <div class="star-rating__wrap">
+                                                    <input class="star-rating__input" id="star-rating-5" type="radio"
+                                                           name="rating" value="5">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-5"
+                                                           title="Amazing"></label>
+                                                    <input class="star-rating__input" id="star-rating-4" type="radio"
+                                                           name="rating" value="4">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-4"
+                                                           title="Very good"></label>
+                                                    <input class="star-rating__input" id="star-rating-3" type="radio"
+                                                           name="rating" value="3">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-3"
+                                                           title="Good"></label>
+                                                    <input class="star-rating__input" id="star-rating-2" type="radio"
+                                                           name="rating" value="2">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-2"
+                                                           title="Bad"></label>
+                                                    <input class="star-rating__input" id="star-rating-1" type="radio"
+                                                           name="rating" value="1">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-1"
+                                                           title="Very bad"></label>
+                                                    <input class="star-rating__input" id="star-rating-0" type="radio"
+                                                           name="rating" value="0">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg" for="star-rating-0"
+                                                           title="Very bad"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="reviewTextArea" name="review" rows="3"
+                                                  placeholder="Review text"></textarea>
+                                    </div>
+                                    <button class="btn btn-primary mt-2" id="addReviewBtn">
+                                        Add review
+                                    </button>
+                                    <div class="row">
+                                        <div class="col-md-auto">
+                                            <div class="alert-review" id="alert_placeholder"></div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-auto" id="show-my-rev"  th:if="${signInData.user}">
+                        <button class="btn  btn-primary mt-2 buttons"  >
+                            Show my review
+                        </button>
+                    </div>
+                    <div class="col-md-4"  th:if="${signInData.user}">
+                        <button class="btn btn-primary mt-2 buttons" id="show-all-rev">
+                            Show all reviews
+                        </button>
+                    </div>
+                    <div class="col-md-4"  th:if="${signInData.user}">
+                        <button class="btn btn-primary mt-2 buttons" id="del-my-rev">
+                            Delete my review
+                        </button>
+                    </div>
+
+                    <div class="col-md-4" id="change-my-rev" th:if="${signInData.user}">
+                        <a class="btn btn-primary mt-2 buttons" data-toggle="collapse" href="#reviewService2"
+                           role="button"
+                           id="toggl-btn2"
+                           aria-expanded="false"
+                           aria-controls="reviewService2">Edit my review</a>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6"  th:if="${signInData.user}">
+                        <button class="btn btn-primary mt-2 buttons" id="update-my-route">
+                            Update/delete route
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="row justify-content-md-center">
+                    <div class="col-md-12">
+                        <div class="collapse" id="reviewService2">
+                            <hr>
+                            <div class="form-group mt-3" th:if="${signInData.user}">
+                                <form name="reviewForm" id="routeForm2" onsubmit="return false;">
+
+
+                                    <div class="form-row">
+                                        <div class="col-md-auto">
+                                            Route mark:
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="star-rating">
+                                                <div class="star-rating__wrap">
+                                                    <input class="star-rating__input" id="star-rating-52" type="radio"
+                                                           name="rating" value="5">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg"
+                                                           for="star-rating-52"
+                                                           title="Amazing"></label>
+                                                    <input class="star-rating__input" id="star-rating-42" type="radio"
+                                                           name="rating" value="4">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg"
+                                                           for="star-rating-42"
+                                                           title="Very good"></label>
+                                                    <input class="star-rating__input" id="star-rating-32" type="radio"
+                                                           name="rating" value="3">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg"
+                                                           for="star-rating-32"
+                                                           title="Good"></label>
+                                                    <input class="star-rating__input" id="star-rating-22" type="radio"
+                                                           name="rating" value="2">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg"
+                                                           for="star-rating-22"
+                                                           title="Bad"></label>
+                                                    <input class="star-rating__input" id="star-rating-12" type="radio"
+                                                           name="rating" value="1">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg"
+                                                           for="star-rating-12"
+                                                           title="Very bad"></label>
+                                                    <input class="star-rating__input" id="star-rating-02" type="radio"
+                                                           name="rating" value="0">
+                                                    <label class="star-rating__ico fa fa-star-o fa-lg"
+                                                           for="star-rating-02"
+                                                           title="Very bad"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-row">
+
+
+                                            <textarea class="form-control" id="reviewTextArea2" name="review" rows="3"
+                                                      placeholder="Review text"></textarea>
+                                    </div>
+
+                                    <button class="btn btn-primary mt-2 buttons" id="addReviewBtn2">
+                                        Apply
+                                    </button>
+                                    <div class="row">
+                                        <div class="col-md-auto">
+                                            <div class="alert-review" id="alert_placeholder2"></div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="routeEditModal" tabindex="-1" role="dialog" aria-labelledby="routeInfoModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="routeEditModalLabel">Edit info about your route</h5>
+
+                <button type="button" id="cancelRouteEdit" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <script>  $('#update-my-route').on('click', function () {
+                    $('#routeInfoModal').modal('hide');
+                    $('#routeNameUPD').val(route.properties._data.routeName);
+                    $('#shortDescriptionUPD').val(route.properties._data.routeShortDescription);
+                    $("#fullDescriptionUPD").val(route.properties._data.routeFullDescription);
+                    $('#routeEditModal').modal('show');
+                    $('#toggl-btn2').text("Edit my review");
+                    $('#reviewService2').collapse('hide');
+                });
+                </script>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12" id="upd-route-col" th:if="${signInData.user}">
+
+
+                        <div class="form-group mt-3" th:if="${signInData.user}">
+                            <form name="reviewForm" id="routeFormUPD" onsubmit="return false;"
+                                  class="needs-validation" novalidate enctype="multipart/form-data"
+                                  action="/">
+                                <div class="row">
+                                    <div class="col-md-12  mt-2 ">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" placeholder="Route name"
+                                                   aria-label="Имя получателя" aria-describedby="basic-addon2"
+                                                   id="routeNameUPD" name="routeName" required minlength="3"
+                                                   maxlength="100"
+                                                   pattern="[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9 -,!?)(=.;]+">
+                                            <div class="invalid-feedback">
+                                                Please choose a route name.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12  mt-2 ">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control"
+                                                   placeholder="Short description of route"
+                                                   aria-label="Имя получателя" aria-describedby="basic-addon2"
+                                                   id="shortDescriptionUPD" name="shortDescription" required
+                                                   minlength="3"
+                                                   pattern="[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9 -,!?)(=.;]+">
+                                            <div class="invalid-feedback">
+                                                Please choose a short description of route
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12  mt-2 ">
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control"
+                                                   placeholder="Full description of route"
+                                                   aria-label="Имя получателя" aria-describedby="basic-addon2"
+                                                   id="fullDescriptionUPD" name="fullDescription"
+                                                   required minlength="3"
+                                                   pattern="[A-Za-zА-Яа-я0-9][A-Za-zА-Яа-я0-9 -,!?)(=.;]+">
+                                            <div class="invalid-feedback">
+                                                Please choose a full description of route
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-auto">
+                                        <button class="btn btn-primary mt-2" id="upd-route">
+                                            Update route
+                                        </button>
+                                    </div>
+
+                                    <div class="col-md-auto"  th:if="${signInData.user}">
+                                        <button class="btn btn-primary mt-2" id="del-my-route">
+                                            Delete route
+                                        </button>
+                                    </div>
+                                </div>
+                                <script>
+                                    // $('#routeService').collapse('hide');
+                                    $('#update-my-route').on('click', function () {
+
+                                        $('input[name=routeNameUPD]').val("");
+                                        $('input[name=shortDescriptionUPD]').val("");
+                                        $('input[name=fullDescriptionUPD]').val("");
+
+                                    });
+
+                                    $('#upd-route').on("click", function () {
+                                        if ($('#routeFormUPD')[0].checkValidity() == true) {
+
+                                            $.ajax({
+                                                url: 'http://localhost:8080/routes/' + route.properties._data.routeID + '/updateRoute',
+                                                type: 'PUT',
+                                                data: {
+                                                    routeName: $('#routeNameUPD').val(),
+                                                    routeShortDescription: $('#shortDescriptionUPD').val(),
+                                                    routeFullDescription: $('#fullDescriptionUPD').val()
+                                                },
+                                                success: function () {
+                                                    if ($('#routeNameUPD').val() != "") {
+                                                        $('#routeInfoModalLabel').text($('#routeNameUPD').val());
+                                                    }
+                                                    if ($('#shortDescriptionUPD').val() != "") {
+                                                        $('#short-desc').text($('#shortDescriptionUPD').val());
+                                                    }
+                                                    if ($('#fullDescriptionUPD').val() != "") {
+                                                        $('#full-desc').text($('#fullDescriptionUPD').val());
+                                                    }
+                                                    // $('#toggl-btn-upd-route').text("Update route info");
+                                                    // $('#routeService').collapse('hide');
+                                                    //
+                                                },
+                                                error: function () {
+                                                    $('#toastOfError').toast('show');
+                                                }
+
+                                            });
+                                            $('#toggl-btn-upd-route').text("Update route info");
+                                            myMap.geoObjects.removeAll();
+                                            youCanDeleteRoute = true;
+                                            getRoutesFromArea(width);
+                                            $('#routeEditModal').modal('hide');
+                                            $('#toast8').toast('show');
+                                        }
+                                        $('#routeFormUPD')[0].classList.add('was-validated');
+                                    });
+
+                                </script>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast shadow-lg mb-2" id="toast5" style="position: absolute; top: 85%; right: 5px;"
+     data-delay="5000" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-primary p-2">
+        <strong class="mr-auto text-light">My congratulations</strong>
+        <button type="button" class="mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true" style="right: 3px">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body p-2">
+        Review successfully added!
+    </div>
+</div>
+
+<div class="toast shadow-lg mb-2" id="toast6" style="position: absolute; top: 85%; right: 5px;"
+     data-delay="5000" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-primary p-2">
+        <strong class="mr-auto text-light">My congratulations</strong>
+        <button type="button" class="mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true" style="right: 3px">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body p-2">
+        Review successfully deleted!
+    </div>
+</div>
+
+<div class="toast shadow-lg mb-2" id="toast7" style="position: absolute; top: 85%; right: 5px;"
+     data-delay="5000" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-primary p-2">
+        <strong class="mr-auto text-light">My congratulations</strong>
+        <button type="button" class="mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true" style="right: 3px">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body p-2">
+        Route successfully deleted!
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="ReviewModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ReviewModalEditLabel">Review successfully updated</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast shadow-lg mb-2" id="toast8" style="position: absolute; top: 85%; right: 5px;"
+     data-delay="5000" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-primary p-2">
+        <strong class="mr-auto text-light">My congratulations</strong>
+        <button type="button" class="mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true" style="right: 3px">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body p-2">
+        Review successfully updated!
+    </div>
+</div>
+
+<div class="modal fade" id="invalidRouteModal" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-labelledby="invalidRouteModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="invalidRouteModalLabel">Invalid distance between lines!</h5>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary mt-2" data-dismiss="modal">Сontinue drawing of the route
+                </button>
+                <button type="button" id="deleteAllLines" class="btn btn-primary mt-2" data-dismiss="modal">Delete all
+                    lines
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast shadow-lg mb-2" id="toast1" style="position: absolute; top: 85%; right: 5px;"
+     data-delay="5000" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-primary p-2">
+        <strong class="mr-auto text-light">Warning</strong>
+        <button type="button" class="mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true" style="right: 3px">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body p-2">
+        Invalid distance between lines!
+    </div>
+</div>
+
+<div class="toast shadow-lg mb-2" id="toast2" style="position: absolute; top: 85%; right: 5px;"
+     data-delay="5000" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-primary p-2">
+        <strong class="mr-auto text-light">Warning</strong>
+        <button type="button" class="mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true" style="right: 3px">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body p-2">
+        You should paint a route!
+    </div>
+</div>
+
+<div class="toast shadow-lg mb-2" id="toast3" style="position: absolute; top: 15%; right: 5px;"
+     data-delay="4000" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-primary p-2">
+    </div>
+    <div class="toast-body p-2">
+        You can draw a route on the map!
+    </div>
+</div>
+
+<div class="toast shadow-lg mb-2" id="toast4" style="position: absolute; top: 85%; right: 5px;"
+     data-delay="5000" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-primary p-2">
+        <strong class="mr-auto text-light">My congratulations</strong>
+        <button type="button" class="mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true" style="right: 3px">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body p-2">
+        Route successfully added!
+    </div>
+</div>
+
+<div class="toast shadow-lg mb-2" id="toastOfError" style="position: absolute; top: 85%; right: 5px;"
+     data-delay="5000" aria-live="polite" aria-atomic="true">
+    <div class="toast-header bg-danger p-2">
+        <strong class="mr-auto text-light">Warning</strong>
+        <button type="button" class="mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true" style="right: 3px">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body p-2">
+        Error occurred!
+    </div>
+</div>
+
+<script>
+    $('#Modal1').on('hide.bs.modal', function() {
+        getRoutesFromArea(width);
+    })
+</script>
+
+</body>
+</html>
